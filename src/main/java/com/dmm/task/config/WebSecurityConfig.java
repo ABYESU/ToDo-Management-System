@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,12 @@ import com.dmm.task.service.AccountUserDetailsService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AccountUserDetailsService userDetailsService;
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// 画像、JavaScript、cssは認可の対象外とする
+		web.debug(false).ignoring().antMatchers("/images/**", "/js/**", "/css/**");
+	}
 
 	public PasswordEncoder passwordEncoder() {
 		// BCryptアルゴリズムを使用してパスワードのハッシュ化を行う
